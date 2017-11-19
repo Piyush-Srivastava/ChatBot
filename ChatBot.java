@@ -2,6 +2,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
+import javax.swing.*;
 import java.util.Date;
 import java.awt.Color;
 
@@ -15,11 +16,16 @@ public class ChatBot extends JFrame implements KeyListener{
 	JPanel p=new JPanel();
 	JTextArea dialog=new JTextArea(20,50);
 	JTextArea input=new JTextArea(1,50);
+	// JButton Enter;
+	
 	JScrollPane scroll=new JScrollPane(
 		dialog,
 		JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
 	);
+
+	
+		
 	
 	String[][] chatBot={
 		//standard greetings
@@ -48,11 +54,13 @@ public class ChatBot extends JFrame implements KeyListener{
 		
 		dialog.setEditable(false);
 		input.addKeyListener(this);
-	
+		
 		p.add(scroll);
 		p.add(input);
 		p.setBackground(new Color(255,200,0));
 		add(p);
+
+
 		
 		setVisible(true);
 	}
@@ -78,7 +86,7 @@ public class ChatBot extends JFrame implements KeyListener{
         }
 			}
 
-			else if((quote.matches("(.*)your(.*)")&&quote.matches("(.*)name(.*)"))||(quote.matches("(.*)who(.*)")&&quote.matches("(.*)you(.*)")))
+			else if((quote.matches("(.*)your(.*)")&&quote.matches("(.*)name(.*)"))||(quote.matches("who are you(.*)")))
 			{
 				addText("\n-->Zo\t I'm Zo");
 				try
@@ -93,7 +101,7 @@ public class ChatBot extends JFrame implements KeyListener{
 
     }
 
-     	else if((quote.matches("(.*)hi(.*)"))||(quote.matches("(.*)hello(.*)"))||(quote.matches("(.*)hey(.*)")))
+     	else if((quote.matches("(.*)hi(.*)"))||(quote.matches("(.*)hello(.*)"))||(quote.matches("(.*)hey(.*)"))||(quote.matches("(.*)Yo(.*)")))
      	{
      		addText("\n-->Zo\t Hello");
 				try
@@ -119,16 +127,45 @@ public class ChatBot extends JFrame implements KeyListener{
 
 			}
 
-			else if((quote.matches("(.*)play(.*)")&&quote.matches("(.*)music(.*)")))
+
+			else if((quote.matches("(.*)your(.*)")&&quote.matches("(.*)name(.*)"))||(quote.matches("who are you(.*)")))
 			{
+				addText("\n-->Zo\t I'm Zo");
 				try
 				{String[] env = {"PATH=/bin:/usr/bin/"};
-				String cmd = "open /Applications/iTunes.app";  
+				String cmd = "say I'm Zo";  
 				Process process = Runtime.getRuntime().exec(cmd, env);
 				}
 				catch(Exception s) {
         s.printStackTrace();
         }
+
+
+    }
+
+			else if((quote.matches("(.*)play(.*)")&&quote.matches("(.*)music(.*)")))
+			{
+				addText("\n-->Zo\t Playing music......");
+				
+				Runtime runtime = Runtime.getRuntime();
+                String[] args = {"osascript" , "-e" , "tell application \"iTunes\" to play"};
+                try{
+                Process process = runtime.exec(args);
+                }catch (Exception ex) {                 
+                }
+
+			}
+
+			else if((quote.matches("(.*)pause(.*)")&&quote.matches("(.*)music(.*)")))
+			{
+				
+				
+				Runtime runtime = Runtime.getRuntime();
+                String[] args = {"osascript" , "-e" , "tell application \"iTunes\" to pause"};
+                try{
+                Process process = runtime.exec(args);
+                }catch (Exception ex) {                 
+                }
 
 			}
 
@@ -151,6 +188,40 @@ public class ChatBot extends JFrame implements KeyListener{
                                Date date = new Date();
                                addText("\n-->Michael\t Today's date is: " + date.toString());
                            }
+
+        else if((quote.matches("(.*)weather(.*)"))||(quote.matches("(.*)temperature(.*)")))
+        {
+        
+        	
+
+    //     	try
+				// {String[] env = {"PATH=/bin:/usr/bin/"};
+				// String url = "wttr.in/india";  
+				// String[] command = {"curl", "-H", "Accept:application/json", "-u", url};
+				// Process process = Runtime.getRuntime().exec(cmd, env);
+				// }
+				// catch(Exception s) {
+    //     				s.printStackTrace();
+    //     			}
+
+        }
+
+
+
+			else if((quote.matches("(.*)what can(.*)")))
+			{
+				addText("\n-->Zo\t Certainly a lot of things!");
+				try
+				{String[] env = {"PATH=/bin:/usr/bin/"};
+				String cmd = "say  Certainly a lot of things!";  
+				Process process = Runtime.getRuntime().exec(cmd, env);
+				}
+				catch(Exception s) {
+        s.printStackTrace();
+        }
+
+
+    }
             else{
             	addText("\n-->Zo\t Sorry! You're expecting too much. I'm still under development.");
 				try
