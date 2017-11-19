@@ -5,6 +5,9 @@ import javax.swing.JScrollPane;
 import javax.swing.*;
 import java.util.Date;
 import java.awt.Color;
+import java.io.*;
+import java.util.*;
+import java.lang.*;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -60,35 +63,134 @@ public class ChatBot extends JFrame implements KeyListener{
 		p.setBackground(new Color(255,200,0));
 		add(p);
 
-
-		
-		setVisible(true);
-	}
-	
-	public void keyPressed(KeyEvent e){
-		if(e.getKeyCode()==KeyEvent.VK_ENTER){
-			input.setEditable(false);
-			//-----grab quote-----------
-			String quote=input.getText();
-			input.setText("");
-			addText("-->You:\t"+quote);
-			quote = quote.toLowerCase();
-			if((quote.matches("(.*)how(.*)")&&quote.matches("(.*)you(.*)")))
-			{
-				addText("\n-->Zo\t I'm good.");
+		addText("\n-->Zo\t Hello, I am your virtual assistant Zo. How can i help you?\n");
 				try
 				{String[] env = {"PATH=/bin:/usr/bin/"};
-				String cmd = "say I'm good";  
+				String cmd = "say Hello, I am your virtual assistant Zo. How can i help you?";  
 				Process process = Runtime.getRuntime().exec(cmd, env);
 				}
 				catch(Exception s) {
         s.printStackTrace();
         }
+		
+		setVisible(true);
+	}
+	
+	public void keyPressed(KeyEvent e){
+
+		if(e.getKeyCode()==KeyEvent.VK_ENTER){
+			input.setEditable(false);
+			//-----grab quote-----------
+
+			String quote=input.getText();
+			input.setText("");
+			addText("-->You:\t"+quote);
+			quote = quote.toLowerCase();
+
+			if((quote.matches("(.*)how(.*)")&&quote.matches("(.*)you(.*)")))
+			{
+				// addText("\n-->Zo\t I'm good. Yourself?");
+				// try
+				// {String[] env = {"PATH=/bin:/usr/bin/"};
+				// String cmd = "say I'm good. Yourself?";  
+				// Process process = Runtime.getRuntime().exec(cmd, env);
+				// }
+				// catch(Exception s) {
+    //     s.printStackTrace();
+    //     }
+				try{ 
+			File file = new File("resp.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String ln = reader.readLine();
+			List<String> lines = new ArrayList<String>();
+			while(ln != null){
+				lines.add(ln);
+				ln = reader.readLine();
 			}
+			Random r = new Random();
+			String text = lines.get(r.nextInt(lines.size()));
+			addText("\n-->Zo:\t"+text);
+			try
+				{String[] env = {"PATH=/bin:/usr/bin/"};
+				String cmd = "say "+text;  
+				Process process = Runtime.getRuntime().exec(cmd, env);
+				}
+				catch(Exception s) {
+        s.printStackTrace();
+        }
+			}catch (IOException t){
+			t.printStackTrace();}
+			
+			}
+			if((quote.matches("(.*)tell(.*)")&&quote.matches("(.*)joke(.*)")))
+			{
+				// addText("\n-->Zo\t I'm good. Yourself?");
+				// try
+				// {String[] env = {"PATH=/bin:/usr/bin/"};
+				// String cmd = "say I'm good. Yourself?";  
+				// Process process = Runtime.getRuntime().exec(cmd, env);
+				// }
+				// catch(Exception s) {
+    //     s.printStackTrace();
+    //     }
+				try{ 
+			File file = new File("jokes.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String ln = reader.readLine();
+			List<String> lines = new ArrayList<String>();
+			while(ln != null){
+				lines.add(ln);
+				ln = reader.readLine();
+			}
+			Random r = new Random();
+			String text = lines.get(r.nextInt(lines.size()));
+			
+			addText("\n-->Zo:\t"+text);
+			
+			try
+				{String[] env = {"PATH=/bin:/usr/bin/"};
+				String cmd = "say "+text;  
+				Process process = Runtime.getRuntime().exec(cmd, env);
+			}
+				catch(Exception s) {
+        s.printStackTrace();
+        }
+    //     	String text2 = lines.get(r.nextInt(lines.size())+1);
+    //     	addText("\n-->Zo:\t"+text);
+    //     try
+				// {String[] env = {"PATH=/bin:/usr/bin/"};
+				// String cmd = "say "+text2;  
+				// Process process = Runtime.getRuntime().exec(cmd, env);
+				// String time = "delay 1";
+				// Process process2 =  Runtime.getRuntime().exec(time, env);
+				// }
+				// catch(Exception s) {
+    //     s.printStackTrace();
+    //     }
+			}catch (IOException t){
+			t.printStackTrace();}
+			
+			}
+
+				else if((quote.matches("(.*)good(.*)")||quote.matches("(.*)fine(.*)"))||(quote.matches("(.*)well(.*)")))
+			{
+				addText("\n-->Zo\t I'm glad to hear that.");
+				try
+				{String[] env = {"PATH=/bin:/usr/bin/"};
+				String cmd = "say I'm glad to hear that.";  
+				Process process = Runtime.getRuntime().exec(cmd, env);
+				}
+				catch(Exception s) {
+        s.printStackTrace();
+        }
+
+
+    }
+
 
 			else if((quote.matches("(.*)your(.*)")&&quote.matches("(.*)name(.*)"))||(quote.matches("who are you(.*)")))
 			{
-				addText("\n-->Zo\t I'm Zo");
+				addText("\n-->Zo\t I'm Zo!");
 				try
 				{String[] env = {"PATH=/bin:/usr/bin/"};
 				String cmd = "say I'm Zo";  
@@ -101,9 +203,9 @@ public class ChatBot extends JFrame implements KeyListener{
 
     }
 
-     	else if((quote.matches("(.*)hi(.*)"))||(quote.matches("(.*)hello(.*)"))||(quote.matches("(.*)hey(.*)"))||(quote.matches("(.*)Yo(.*)")))
+     	else if((quote.matches("(.*)hi(.*)"))||(quote.matches("(.*)hello(.*)"))||(quote.matches("(.*)hey(.*)"))||(quote.matches("yo")))
      	{
-     		addText("\n-->Zo\t Hello");
+     		addText("\n-->Zo\t Hello!");
 				try
 				{String[] env = {"PATH=/bin:/usr/bin/"};
 				String cmd = "say Hello";  
@@ -119,6 +221,53 @@ public class ChatBot extends JFrame implements KeyListener{
 				try
 				{String[] env = {"PATH=/bin:/usr/bin/"};
 				String cmd = "open /Applications/Telegram.app";  
+				Process process = Runtime.getRuntime().exec(cmd, env);
+				}
+				catch(Exception s) {
+        s.printStackTrace();
+        }
+    }
+        else if((quote.matches("(.*)open(.*)")&&quote.matches("(.*)twitter(.*)")))
+			{
+				try
+				{String[] env = {"PATH=/bin:/usr/bin/"};
+				String cmd = "open /Applications/Twitter.app";  
+				Process process = Runtime.getRuntime().exec(cmd, env);
+				}
+				catch(Exception s) {
+        s.printStackTrace();
+        }
+
+			}
+			else if((quote.matches("(.*)open(.*)")&&quote.matches("(.*)calendar(.*)")))
+			{
+				try
+				{String[] env = {"PATH=/bin:/usr/bin/"};
+				String cmd = "open /Applications/Calendar.app";  
+				Process process = Runtime.getRuntime().exec(cmd, env);
+				}
+				catch(Exception s) {
+        s.printStackTrace();
+        }
+
+			}
+			else if((quote.matches("(.*)open(.*)")&&quote.matches("(.*)calculator(.*)")))
+			{
+				try
+				{String[] env = {"PATH=/bin:/usr/bin/"};
+				String cmd = "open /Applications/Calculator.app";  
+				Process process = Runtime.getRuntime().exec(cmd, env);
+				}
+				catch(Exception s) {
+        s.printStackTrace();
+        }
+
+			}
+			else if((quote.matches("(.*)play(.*)")&&quote.matches("(.*)chess(.*)")))
+			{
+				try
+				{String[] env = {"PATH=/bin:/usr/bin/"};
+				String cmd = "open /Applications/Chess.app";  
 				Process process = Runtime.getRuntime().exec(cmd, env);
 				}
 				catch(Exception s) {
